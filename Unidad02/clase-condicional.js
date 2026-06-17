@@ -46,16 +46,12 @@ Ternario      La condición es simple y cabe en una sola línea.
 
  */ 
 
- let nombre = "Fernando"
+ let nombre = "Fernando";
 
- if(nombre === "Cristian"){
-    console.log("Hola fer")
- )else if (nombre === "Cristian"){
-        console.log("Hola Cris"){
-        )else {
-            console
-        }
-        }
-
-    }
- }
+if (nombre === "Fernando") {
+  console.log("Hola fer");
+} else if (nombre === "Cristian") {
+  console.log("Hola Cris");
+} else {
+  console.log("No te conozco");
+}
