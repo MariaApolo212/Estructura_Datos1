@@ -53,5 +53,15 @@ if (nombre === "Fernando") {
 } else if (nombre === "Cristian") {
   console.log("Hola Cris");
 } else {
-  console.log("No te conozco");
+  console.log("No encontre tu nombre");
 }
+
+const a = 10;
+const b = 20;
+const c = "30"
+a == b
+
+a === b
+a === c
+a == c
+
