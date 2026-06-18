@@ -3,10 +3,7 @@ package Unidad02.Ape7;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Siguiendo al ing
- * @author bluebul
- */
+
 public class CentroDistribucion {
     private ArrayList<Paquete> inventario;
 
