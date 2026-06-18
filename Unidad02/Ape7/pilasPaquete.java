@@ -1,4 +1,4 @@
-package invento;
+package Unidad02.Ape7;
 
 public class pilasPaquete {
     private Paquete[] pila; //atributos internos arreglo estatico que guarda los paquetes (tamaño fijo)

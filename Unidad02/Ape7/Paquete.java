@@ -1,10 +1,6 @@
 package Unidad02.Ape7;
 
-/**
- * Siguiendo al Ingeniero
- * Asignatura: Estructura de Datos
- * @author bluebul
- */
+
 public class Paquete {
     private int id;
     private int codigoPostalDestino;
