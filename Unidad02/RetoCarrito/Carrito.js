@@ -1,4 +1,7 @@
 // ============================================================
+//Maria Teresa Rivas Apolo
+//3cer ciclo 
+//19/06/2026
 //  Carrito de Compras — Cola FIFO
 //  Estructura: Queue (First In, First Out)
 //  El primer producto añadido es el primero en procesarse.
