@@ -1,5 +1,3 @@
-
-
 class Cola {
     constructor() {
         this.turnos = [];

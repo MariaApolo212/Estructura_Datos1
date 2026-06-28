@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HospitalQ · Gestión de Turnos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚕</span>
+        <div>
+          <span class="logo-name">HospitalQ</span>
+          <span class="logo-sub">Sistema de Turnos</span>
+        </div>
+      </div>
+      <div class="header-stats" id="headerStats">
+        <div class="stat-pill"><span id="hEspera">0</span> en espera</div>
+        <div class="stat-pill stat-pill--green"><span id="hAtendidos">0</span> atendidos</div>
+        <div class="stat-pill stat-pill--red"><span id="hCancelados">0</span> cancelados</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="main">
+
+    <!-- ---- COLUMNA IZQUIERDA ---- -->
+    <section class="panel panel--form">
+
+      <!-- REGISTRO DE PACIENTE -->
+      <div class="card">
+        <h2 class="card-title">
+          <span class="card-icon">👤</span>
+          Registrar Paciente
+        </h2>
+        <div class="field">
+          <label class="label" for="inputNombre">Nombre completo</label>
+          <input class="input" id="inputNombre" type="text" placeholder="Ej. María González" />
+        </div>
+        <div class="field">
+          <label class="label" for="selectEspecialidad">Especialidad</label>
+          <select class="input" id="selectEspecialidad">
+            <option value="Medicina General">🩺 Medicina General</option>
+            <option value="Cardiología">❤️ Cardiología</option>
+            <option value="Pediatría">🍼 Pediatría</option>
+            <option value="Ginecología">🌸 Ginecología</option>
+            <option value="Traumatología">🦴 Traumatología</option>
+            <option value="Neurología">🧠 Neurología</option>
+            <option value="Oftalmología">👁 Oftalmología</option>
+            <option value="Dermatología">🔬 Dermatología</option>
+            <option value="Urgencias">🚨 Urgencias</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Prioridad</label>
+          <div class="radio-group">
+            <label class="radio-opt">
+              <input type="radio" name="prioridad" value="normal" checked /> Normal
+            </label>
+            <label class="radio-opt radio-opt--urgente">
+              <input type="radio" name="prioridad" value="urgente" /> Urgente
+            </label>
+            <label class="radio-opt radio-opt--emergencia">
+              <input type="radio" name="prioridad" value="emergencia" /> Emergencia
+            </label>
+          </div>
+        </div>
+        <button class="btn btn--primary" onclick="UI.registrar()">
+          ＋ Agregar a la cola
+        </button>
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="card">
+        <h2 class="card-title">
+          <span class="card-icon">⚡</span>
+          Acciones
+        </h2>
+        <button class="btn btn--success" onclick="UI.atender()">
+          ▶ Atender siguiente
+        </button>
+        <div class="divider"></div>
+        <label class="label">Cancelar turno por ID</label>
+        <div class="input-row">
+          <input class="input" id="inputCancelar" type="text" placeholder="PAC-000001" />
+          <button class="btn btn--danger" onclick="UI.cancelar()">Cancelar</button>
+        </div>
+        <div class="divider"></div>
+        <button class="btn btn--ghost" onclick="UI.limpiar()">
+          🗑 Limpiar todo el sistema
+        </button>
+      </div>
+
+      <!-- SIMULACIÓN RECURSIVA -->
+      <div class="card">
+        <h2 class="card-title">
+          <span class="card-icon">🔄</span>
+          Simulación Recursiva
+        </h2>
+        <p class="card-desc">
+          Simula el ciclo completo de un paciente que pasa por múltiples etapas de atención (consulta → exámenes → resultados → farmacia).
+        </p>
+        <div class="field">
+          <label class="label" for="inputRecNombre">Nombre del paciente</label>
+          <input class="input" id="inputRecNombre" type="text" placeholder="Ej. Carlos Pérez" value="Carlos Pérez" />
+        </div>
+        <div class="field">
+          <label class="label" for="inputRecProfundidad">Etapas de re-consulta (1–4)</label>
+          <input class="input" id="inputRecProfundidad" type="number" value="3" min="1" max="4" />
+        </div>
+        <button class="btn btn--info" onclick="UI.simularRecursivo()">
+          🔁 Iniciar simulación recursiva
+        </button>
+      </div>
+    </section>
+
+    <!-- ---- COLUMNA DERECHA ---- -->
+    <section class="panel panel--queue">
+
+      <!-- COLA EN TIEMPO REAL -->
+      <div class="card card--full">
+        <div class="card-header-row">
+          <h2 class="card-title">
+            <span class="card-icon">📋</span>
+            Cola de espera
+            <span class="badge" id="badgeCola">0</span>
+          </h2>
+          <span class="hint">FIFO · Primero en entrar, primero en salir</span>
+        </div>
+        <div class="queue-list" id="listaEspera">
+          <div class="empty-state">
+            <span class="empty-icon">🏥</span>
+            <p>No hay pacientes en espera.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG DE EVENTOS -->
+      <div class="card card--full">
+        <div class="card-header-row">
+          <h2 class="card-title">
+            <span class="card-icon">📟</span>
+            Registro de eventos
+          </h2>
+          <button class="btn btn--ghost btn--sm" onclick="UI.limpiarLog()">Limpiar</button>
+        </div>
+        <div class="log" id="logEventos">
+          <p class="log-entry log-entry--info">🟢 Sistema iniciado y listo.</p>
+        </div>
+      </div>
+
+      <!-- PRUEBAS DE RENDIMIENTO -->
+      <div class="card card--full">
+        <h2 class="card-title">
+          <span class="card-icon">📊</span>
+          Pruebas de Rendimiento
+        </h2>
+        <p class="card-desc">
+          Mide el tiempo de inserción y atención de la cola con diferentes volúmenes de datos.
+        </p>
+        <div class="perf-btns">
+          <button class="btn btn--outline btn--sm" onclick="UI.ejecutarPrueba(50)">50</button>
+          <button class="btn btn--outline btn--sm" onclick="UI.ejecutarPrueba(75)">75</button>
+          <button class="btn btn--outline btn--sm" onclick="UI.ejecutarPrueba(1000)">1 K</button>
+          <button class="btn btn--outline btn--sm" onclick="UI.ejecutarPrueba(50000)">50 K</button>
+          <button class="btn btn--outline btn--sm" onclick="UI.ejecutarPrueba(200000)">200 K</button>
+          <button class="btn btn--outline btn--sm btn--warning" onclick="UI.ejecutarPrueba(1000000)">1 M</button>
+        </div>
+        <div class="perf-table-wrap" id="tablaRendimiento">
+          <p class="hint" style="padding:12px 0">Haz clic en un volumen para iniciar la prueba.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== TOAST ===================== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- SCRIPTS -->
+  <script src="cola.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
